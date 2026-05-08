@@ -5,25 +5,25 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Lab 4. Student: Kramskoi Ivan | Variant: 5");
+        System.out.println("Практична робота №4. Студент: Крамськой Іван | Варіант: 5");
         
-        System.out.print("Enter number of clothes items: ");
+        System.out.print("Введіть кількість елементів для масиву одягу: ");
         int count = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); // Очищення буфера
 
         Clothes[] clothesArray = new Clothes[count];
 
         for (int i = 0; i < count; i++) {
-            System.out.println("Enter details for item " + (i + 1) + ":");
-            System.out.print("Type: "); String type = scanner.nextLine();
-            System.out.print("Brand: "); String brand = scanner.nextLine();
-            System.out.print("Size: "); String size = scanner.nextLine();
-            System.out.print("Price: "); double price = scanner.nextDouble();
-            scanner.nextLine();
+            System.out.println("\nВведення даних для товару №" + (i + 1) + ":");
+            System.out.print("Тип: "); String type = scanner.nextLine();
+            System.out.print("Бренд: "); String brand = scanner.nextLine();
+            System.out.print("Розмір: "); String size = scanner.nextLine();
+            System.out.print("Ціна: "); double price = scanner.nextDouble();
+            scanner.nextLine(); // Очищення буфера
             clothesArray[i] = new Clothes(type, brand, size, price);
         }
 
-        System.out.println("\n--- Inventory List ---");
+        System.out.println("\n--- Список введеного одягу ---");
         for (Clothes item : clothesArray) {
             System.out.println(item);
         }
