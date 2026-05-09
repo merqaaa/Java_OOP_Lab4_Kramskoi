@@ -1,29 +1,36 @@
 package ua.edu.sumdu.j2se.pr4;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final List<Clothes> inventory = new ArrayList<>();
+    private static List<Clothes> inventory;
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Практична робота №8. Студент: Крамськой Іван | Варіант: 5");
+        System.out.println("Практична робота №9. Студент: Крамськой Іван | Варіант: 5");
+        
+        // 1. Завантажуємо дані з файлу при старті
+        inventory = FileManager.loadFromFile();
+        
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- ГОЛОВНЕ МЕНЮ ---");
+            System.out.println("\n--- ГОЛОВНЕ МЕНЮ (Робота з файлами JSON) ---");
             System.out.println("1. Створити новий об'єкт");
             System.out.println("2. Вивести інформацію про всі об'єкти");
-            System.out.println("3. Завершити роботу");
+            System.out.println("3. Завершити роботу та ЗБЕРЕГТИ дані у файл");
             System.out.print("Вибір: ");
 
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1" -> creationMenu();
                 case "2" -> showInventory();
-                case "3" -> running = false;
+                case "3" -> {
+                    // 2. Зберігаємо дані перед виходом
+                    FileManager.saveToFile(inventory);
+                    running = false;
+                }
                 default -> System.out.println("Помилка вибору.");
             }
         }
@@ -72,7 +79,7 @@ public class Main {
                 }
                 default -> System.out.println("Невірний тип.");
             }
-            System.out.println("Об'єкт успішно додано до колекції!");
+            System.out.println("Об'єкт додано до оперативної пам'яті (щоб зберегти у файл, оберіть вихід)!");
         } catch (Exception e) {
             System.out.println("Помилка при створенні: " + e.getMessage());
         }

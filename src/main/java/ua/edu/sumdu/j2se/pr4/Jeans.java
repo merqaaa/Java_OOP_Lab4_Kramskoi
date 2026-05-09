@@ -1,10 +1,13 @@
 package ua.edu.sumdu.j2se.pr4;
 
 public class Jeans extends Pants {
-    private String washType; // Тип прання (напр. Stone Wash, Dark)
+    private String washType;
+
+    public Jeans() {}
 
     public Jeans(String brand, Size size, double price, int length, String washType) {
         super(brand, size, price, length);
+        this.classType = "Jeans";
         setWashType(washType);
         setType("Джинси");
     }

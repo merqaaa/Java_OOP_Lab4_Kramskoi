@@ -1,20 +1,32 @@
 package ua.edu.sumdu.j2se.pr4;
-
 import java.util.Objects;
 
 public class Clothes {
+    protected String classType;
     private String type;
     private String brand;
     private Size size;
     private double price;
 
+    public Clothes() {} // Порожній конструктор для Gson
+
     public Clothes(String type, String brand, Size size, double price) {
+        this.classType = "Clothes";
         setType(type);
         setBrand(brand);
         setSize(size);
         setPrice(price);
     }
 
+    public Clothes(Clothes other) {
+        this.classType = other.classType;
+        this.type = other.type;
+        this.brand = other.brand;
+        this.size = other.size;
+        this.price = other.price;
+    }
+
+    public String getClassType() { return classType; }
     public String getType() { return type; }
     public void setType(String type) {
         if (type == null || type.trim().isEmpty()) throw new IllegalArgumentException("Тип порожній.");
