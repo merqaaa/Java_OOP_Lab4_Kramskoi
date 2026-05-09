@@ -3,54 +3,57 @@ package ua.edu.sumdu.j2se.pr4;
 import java.util.Objects;
 
 /**
- * Клас, що представляє предмет одягу.
- * Містить інформацію про тип, бренд, розмір та ціну.
+ * Клас предметної області "Одяг" з валідацією даних.
  */
 public class Clothes {
+    // Статичне поле для підрахунку всіх створених об'єктів
+    private static int totalClothesCreated = 0;
+
     private String type;
     private String brand;
-    private String size;
+    private Size size; // Використання Enum
     private double price;
 
     /**
-     * Конструктор для створення об'єкта Clothes.
-     *
-     * @param type  тип одягу (не може бути порожнім)
-     * @param brand бренд одягу (не може бути порожнім)
-     * @param size  розмір одягу (не може бути порожнім)
-     * @param price ціна одягу (повинна бути більшою за 0)
-     * @throws IllegalArgumentException якщо передані некоректні дані
+     * Основний конструктор.
      */
-    public Clothes(String type, String brand, String size, double price) {
+    public Clothes(String type, String brand, Size size, double price) {
         setType(type);
         setBrand(brand);
         setSize(size);
         setPrice(price);
+        totalClothesCreated++; // Збільшуємо лічильник при створенні
     }
 
-    /** Отримує тип одягу. */
-    public String getType() { return type; }
-
     /**
-     * Встановлює тип одягу.
-     * @param type тип одягу
-     * @throws IllegalArgumentException якщо рядок порожній або null
+     * Конструктор копіювання.
+     * @param other об'єкт для копіювання
      */
+    public Clothes(Clothes other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Неможливо скопіювати null об'єкт.");
+        }
+        this.type = other.type;
+        this.brand = other.brand;
+        this.size = other.size;
+        this.price = other.price;
+        totalClothesCreated++; // Збільшуємо лічильник при копіюванні
+    }
+
+    /** Статичний гетер для лічильника об'єктів */
+    public static int getTotalClothesCreated() {
+        return totalClothesCreated;
+    }
+
+    public String getType() { return type; }
     public void setType(String type) {
         if (type == null || type.trim().isEmpty()) {
-            throw new IllegalArgumentException("Тип одягу не може бути порожнім.");
+            throw new IllegalArgumentException("Тип не може бути порожнім.");
         }
         this.type = type;
     }
 
-    /** Отримує бренд одягу. */
     public String getBrand() { return brand; }
-
-    /**
-     * Встановлює бренд одягу.
-     * @param brand бренд одягу
-     * @throws IllegalArgumentException якщо рядок порожній або null
-     */
     public void setBrand(String brand) {
         if (brand == null || brand.trim().isEmpty()) {
             throw new IllegalArgumentException("Бренд не може бути порожнім.");
@@ -58,39 +61,25 @@ public class Clothes {
         this.brand = brand;
     }
 
-    /** Отримує розмір одягу. */
-    public String getSize() { return size; }
-
-    /**
-     * Встановлює розмір одягу.
-     * @param size розмір одягу
-     * @throws IllegalArgumentException якщо рядок порожній або null
-     */
-    public void setSize(String size) {
-        if (size == null || size.trim().isEmpty()) {
-            throw new IllegalArgumentException("Розмір не може бути порожнім.");
+    public Size getSize() { return size; }
+    public void setSize(Size size) {
+        if (size == null) {
+            throw new IllegalArgumentException("Розмір не може бути null.");
         }
         this.size = size;
     }
 
-    /** Отримує ціну одягу. */
     public double getPrice() { return price; }
-
-    /**
-     * Встановлює ціну одягу.
-     * @param price ціна одягу
-     * @throws IllegalArgumentException якщо ціна менша або дорівнює 0
-     */
     public void setPrice(double price) {
         if (price <= 0) {
-            throw new IllegalArgumentException("Ціна повинна бути більшою за нуль.");
+            throw new IllegalArgumentException("Ціна повинна бути більшою за 0.");
         }
         this.price = price;
     }
 
     @Override
     public String toString() {
-        return String.format("Clothes[Type: %s, Brand: %s, Size: %s, Price: %.2f]", type, brand, size, price);
+        return String.format("Clothes[Тип: %s, Бренд: %s, Розмір: %s, Ціна: %.2f]", type, brand, size, price);
     }
 
     @Override
@@ -98,9 +87,6 @@ public class Clothes {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Clothes clothes = (Clothes) o;
-        return Double.compare(clothes.price, price) == 0 && 
-               Objects.equals(type, clothes.type) && 
-               Objects.equals(brand, clothes.brand) && 
-               Objects.equals(size, clothes.size);
+        return Double.compare(clothes.price, price) == 0 && Objects.equals(type, clothes.type) && Objects.equals(brand, clothes.brand) && size == clothes.size;
     }
 }
