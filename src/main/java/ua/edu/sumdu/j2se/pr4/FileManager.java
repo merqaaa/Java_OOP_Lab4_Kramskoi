@@ -9,7 +9,7 @@ public class FileManager {
     private static final String FILE_NAME = "input.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static void saveToFile(List<Clothes> inventory) {
+    public static void saveToFile(List<StoreItem> inventory) {
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             gson.toJson(inventory, writer);
             System.out.println("\n[СИСТЕМА] Дані успішно збережено у файл: " + FILE_NAME);
@@ -18,8 +18,8 @@ public class FileManager {
         }
     }
 
-    public static List<Clothes> loadFromFile() {
-        List<Clothes> inventory = new ArrayList<>();
+    public static List<StoreItem> loadFromFile() {
+        List<StoreItem> inventory = new ArrayList<>();
         File file = new File(FILE_NAME);
         
         if (!file.exists()) {
@@ -32,22 +32,25 @@ public class FileManager {
             if (element != null && element.isJsonArray()) {
                 JsonArray jsonArray = element.getAsJsonArray();
                 for (JsonElement el : jsonArray) {
-                    JsonObject obj = el.getAsJsonObject();
-                    String classType = obj.get("classType").getAsString();
+                    JsonObject wrapperObj = el.getAsJsonObject();
+                    int quantity = wrapperObj.get("quantity").getAsInt();
+                    
+                    JsonObject itemObj = wrapperObj.getAsJsonObject("item");
+                    String classType = itemObj.get("classType").getAsString();
 
                     Clothes item = switch (classType) {
-                        case "Pants" -> gson.fromJson(obj, Pants.class);
-                        case "Jeans" -> gson.fromJson(obj, Jeans.class);
-                        case "Shirts" -> gson.fromJson(obj, Shirts.class);
-                        case "DressShirts" -> gson.fromJson(obj, DressShirts.class);
-                        default -> gson.fromJson(obj, Clothes.class);
+                        case "Pants" -> gson.fromJson(itemObj, Pants.class);
+                        case "Jeans" -> gson.fromJson(itemObj, Jeans.class);
+                        case "Shirts" -> gson.fromJson(itemObj, Shirts.class);
+                        case "DressShirts" -> gson.fromJson(itemObj, DressShirts.class);
+                        default -> gson.fromJson(itemObj, Clothes.class);
                     };
-                    inventory.add(item);
+                    inventory.add(new StoreItem(item, quantity));
                 }
             }
             System.out.println("[СИСТЕМА] Дані успішно завантажено з файлу: " + FILE_NAME);
         } catch (Exception e) {
-            System.out.println("[ПОМИЛКА] Помилка читання файлу (можливо він порожній або пошкоджений).");
+            System.out.println("[ПОМИЛКА] Помилка читання файлу: " + e.getMessage());
         }
         return inventory;
     }

@@ -1,0 +1,23 @@
+[
+  {
+    "item": {
+      "classType": "Clothes",
+      "type": "Футболка",
+      "brand": "Nike",
+      "size": "M",
+      "price": 500.0
+    },
+    "quantity": 1
+  },
+  {
+    "item": {
+      "length": 110,
+      "classType": "Pants",
+      "type": "Штани",
+      "brand": "Next",
+      "size": "L",
+      "price": 1600.0
+    },
+    "quantity": 1
+  }
+]
