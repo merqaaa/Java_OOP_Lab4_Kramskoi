@@ -4,19 +4,23 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClothesTest {
-
     @Test
-    void shouldThrowExceptionWhenInvalidPriceInConstructor() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Clothes("Футболка", "Nike", "M", -10.0);
-        }, "Конструктор повинен кидати виняток при від'ємній ціні");
+    void testInvalidPrice() {
+        assertThrows(IllegalArgumentException.class, () -> new Clothes("T", "B", Size.M, -5.0));
     }
 
     @Test
-    void shouldThrowExceptionWhenTypeIsEmpty() {
-        Clothes item = new Clothes("Тип", "Бренд", "L", 100.0);
-        assertThrows(IllegalArgumentException.class, () -> {
-            item.setType("");
-        }, "Сетер повинен кидати виняток при порожньому рядку");
+    void testEmptyType() {
+        Clothes c = new Clothes("Тип", "Бренд", Size.L, 100);
+        assertThrows(IllegalArgumentException.class, () -> c.setType(""));
+    }
+
+    @Test
+    void testCopyConstructor() {
+        Clothes original = new Clothes("Футболка", "Nike", Size.M, 500);
+        Clothes copy = new Clothes(original);
+        
+        assertEquals(original, copy, "Копія повинна бути рівною оригіналу");
+        assertNotSame(original, copy, "Копія повинна бути іншим об'єктом у пам'яті");
     }
 }
