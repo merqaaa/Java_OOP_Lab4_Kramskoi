@@ -1,74 +1,72 @@
 package ua.edu.sumdu.j2se.pr4;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final Store store = new Store("Модний Бутик");
+    private static final List<Clothes> inventory = new ArrayList<>();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Практична робота №6. Студент: Крамськой Іван");
+        System.out.println("Практична робота №7. Студент: Крамськой Іван | Варіант: 5");
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- МЕНЮ '" + store.getStoreName() + "' ---");
-            System.out.println("1. Додати товар");
-            System.out.println("2. Скопіювати перший товар");
-            System.out.println("3. Показати всі");
-            System.out.println("4. Статистика");
+            System.out.println("\n--- МЕНЮ (Успадкування та Поліморфізм) ---");
+            System.out.println("1. Додати базовий Одяг");
+            System.out.println("2. Додати Штани (Pants)");
+            System.out.println("3. Додати Сорочку (Shirts)");
+            System.out.println("4. Вивести весь список (Поліморфізм)");
             System.out.println("5. Вихід");
             System.out.print("Вибір: ");
 
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> addItem();
-                case "2" -> copyItem();
-                case "3" -> showItems();
-                case "4" -> showStats();
+                case "1" -> addGeneral();
+                case "2" -> addPants();
+                case "3" -> addShirts();
+                case "4" -> showAll();
                 case "5" -> running = false;
-                default -> System.out.println("Невірний вибір.");
+                default -> System.out.println("Помилка вибору.");
             }
         }
     }
 
-    private static void addItem() {
+    private static void addGeneral() {
         try {
-            System.out.print("Тип: "); String type = scanner.nextLine();
-            System.out.print("Бренд: "); String brand = scanner.nextLine();
-            System.out.print("Розмір (S, M, L, XL, UNIVERSAL): "); 
-            Size size = Size.fromString(scanner.nextLine());
-            System.out.print("Ціна: "); double price = Double.parseDouble(scanner.nextLine());
-            store.addClothes(new Clothes(type, brand, size, price));
-            System.out.println("Додано!");
-        } catch (Exception e) {
-            System.out.println("Помилка: " + e.getMessage());
-        }
+            System.out.print("Тип: "); String t = scanner.nextLine();
+            System.out.print("Бренд: "); String b = scanner.nextLine();
+            System.out.print("Розмір: "); Size s = Size.fromString(scanner.nextLine());
+            System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
+            inventory.add(new Clothes(t, b, s, p));
+        } catch (Exception e) { System.out.println("Помилка: " + e.getMessage()); }
     }
 
-    private static void copyItem() {
-        List<Clothes> items = store.getInventory();
-        if (items.isEmpty()) {
-            System.out.println("Магазин порожній.");
-            return;
-        }
-        store.addClothes(new Clothes(items.get(0)));
-        System.out.println("Копію створено!");
+    private static void addPants() {
+        try {
+            System.out.print("Бренд: "); String b = scanner.nextLine();
+            System.out.print("Розмір: "); Size s = Size.fromString(scanner.nextLine());
+            System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
+            System.out.print("Довжина (см): "); int l = Integer.parseInt(scanner.nextLine());
+            inventory.add(new Pants(b, s, p, l));
+        } catch (Exception e) { System.out.println("Помилка: " + e.getMessage()); }
     }
 
-    private static void showItems() {
-        List<Clothes> items = store.getInventory();
-        if (items.isEmpty()) {
-            System.out.println("Список порожній.");
-        } else {
-            for (Clothes c : items) {
-                System.out.println(c);
-            }
-        }
+    private static void addShirts() {
+        try {
+            System.out.print("Бренд: "); String b = scanner.nextLine();
+            System.out.print("Розмір: "); Size s = Size.fromString(scanner.nextLine());
+            System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
+            System.out.print("Рукав: "); String sl = scanner.nextLine();
+            inventory.add(new Shirts(b, s, p, sl));
+        } catch (Exception e) { System.out.println("Помилка: " + e.getMessage()); }
     }
 
-    private static void showStats() {
-        System.out.println("В магазині: " + store.getInventoryCount());
-        System.out.println("Всього об'єктів Clothes створено: " + Clothes.getTotalClothesCreated());
+    private static void showAll() {
+        System.out.println("\n--- ВМІСТ КОЛЕКЦІЇ (Поліморфний вивід) ---");
+        for (Clothes item : inventory) {
+            System.out.println(item.toString());
+        }
     }
 }
