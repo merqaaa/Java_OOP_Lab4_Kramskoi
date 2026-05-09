@@ -8,15 +8,15 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Практична робота №6. Студент: Крамськой Іван | Варіант: 5");
+        System.out.println("Практична робота №6. Студент: Крамськой Іван");
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- МЕНЮ МАГАЗИНУ '" + store.getStoreName() + "' ---");
-            System.out.println("1. Додати новий одяг");
-            System.out.println("2. Скопіювати перший товар у списку (Демонстрація копіювання)");
-            System.out.println("3. Показати всі товари");
-            System.out.println("4. Статистика (Демонстрація статичного поля)");
+            System.out.println("\n--- МЕНЮ '" + store.getStoreName() + "' ---");
+            System.out.println("1. Додати товар");
+            System.out.println("2. Скопіювати перший товар");
+            System.out.println("3. Показати всі");
+            System.out.println("4. Статистика");
             System.out.println("5. Вихід");
             System.out.print("Вибір: ");
 
@@ -39,30 +39,21 @@ public class Main {
             System.out.print("Розмір (S, M, L, XL, UNIVERSAL): "); 
             Size size = Size.fromString(scanner.nextLine());
             System.out.print("Ціна: "); double price = Double.parseDouble(scanner.nextLine());
-
             store.addClothes(new Clothes(type, brand, size, price));
-            System.out.println("Додано успішно.");
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: Ціна має бути числом.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Помилка валідації: " + e.getMessage());
+            System.out.println("Додано!");
+        } catch (Exception e) {
+            System.out.println("Помилка: " + e.getMessage());
         }
     }
 
     private static void copyItem() {
         List<Clothes> items = store.getInventory();
         if (items.isEmpty()) {
-            System.out.println("Магазин порожній, нічого копіювати.");
+            System.out.println("Магазин порожній.");
             return;
         }
-        try {
-            Clothes original = items.get(0);
-            Clothes copy = new Clothes(original); // Використання конструктора копіювання
-            store.addClothes(copy);
-            System.out.println("Перший товар успішно скопійовано!");
-        } catch (Exception e) {
-            System.out.println("Помилка при копіюванні: " + e.getMessage());
-        }
+        store.addClothes(new Clothes(items.get(0)));
+        System.out.println("Копію створено!");
     }
 
     private static void showItems() {
@@ -70,14 +61,14 @@ public class Main {
         if (items.isEmpty()) {
             System.out.println("Список порожній.");
         } else {
-            items.forEach(System.out.println);
+            for (Clothes c : items) {
+                System.out.println(c);
+            }
         }
     }
 
     private static void showStats() {
-        System.out.println("--- СТАТИСТИКА ---");
-        System.out.println("Товарів зараз у магазині: " + store.getInventoryCount());
-        // Використання статичного методу:
-        System.out.println("Всього об'єктів Clothes створено за весь час: " + Clothes.getTotalClothesCreated());
+        System.out.println("В магазині: " + store.getInventoryCount());
+        System.out.println("Всього об'єктів Clothes створено: " + Clothes.getTotalClothesCreated());
     }
 }
