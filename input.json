@@ -3,6 +3,7 @@
     "item": {
       "length": 110,
       "classType": "Pants",
+      "uuid": "4cfc70e2-b8cb-4728-a5e2-46f728968d62",
       "type": "Штани",
       "brand": "Next",
       "size": "L",
@@ -14,6 +15,7 @@
     "item": {
       "sleeveType": "short",
       "classType": "Shirts",
+      "uuid": "c1e3cbf2-d76f-44b8-9b04-3ac8e69e557f",
       "type": "Сорочка",
       "brand": "Zara",
       "size": "M",
@@ -26,11 +28,36 @@
       "washType": "Machine wash",
       "length": 90,
       "classType": "Jeans",
+      "uuid": "aff9a8fa-1f04-45cd-a261-8b345ef87ac8",
       "type": "Джинси",
       "brand": "Levis",
       "size": "S",
       "price": 1200.0
     },
     "quantity": 8
+  },
+  {
+    "item": {
+      "length": 100,
+      "classType": "Pants",
+      "uuid": "e83b3537-e197-48a2-a3fa-0a7c91cc5ab1",
+      "type": "Штани",
+      "brand": "Nike",
+      "size": "M",
+      "price": 1000.0
+    },
+    "quantity": 1
+  },
+  {
+    "item": {
+      "length": 100,
+      "classType": "Pants",
+      "uuid": "55c9c025-0534-49b9-a2fa-e3ed0028ac61",
+      "type": "Штани",
+      "brand": "adidas",
+      "size": "M",
+      "price": 2300.0
+    },
+    "quantity": 1
   }
 ]
