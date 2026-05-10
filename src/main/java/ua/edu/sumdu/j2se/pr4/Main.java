@@ -2,19 +2,20 @@ package ua.edu.sumdu.j2se.pr4;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
 /**
  * Драйвер-клас для керування магазином.
- * Лабораторна №13: Абстрактні класи та сортування через Comparable.
+ * Лабораторна №14: Inner classes, interface Comparator.
  */
 public class Main {
     private static final Store store = new Store();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Практична робота №13. Студент: Крамськой Іван | Варіант: 5");
+        System.out.println("Практична робота №14. Студент: Крамськой Іван | Варіант: 5");
         
         // Завантаження даних із JSON при старті
         store.setInventory(FileManager.loadFromFile());
@@ -26,7 +27,7 @@ public class Main {
             System.out.println("1. Пошук об'єкта у колекції");
             System.out.println("2. Додати новий товар");
             System.out.println("3. Вивести весь список (як у файлі)");
-            System.out.println("4. Вивести ВІДСОРТОВАНИЙ список (за ціною)");
+            System.out.println("4. Вивести ВІДСОРТОВАНИЙ список (Comparator)");
             System.out.println("5. Завершити роботу та зберегти дані");
             System.out.print("Вибір: ");
 
@@ -47,28 +48,68 @@ public class Main {
     }
 
     /**
-     * Метод для виведення відсортованого списку (ЛР №13).
+     * Меню для сортування колекції (Лабораторна №14)
      */
     private static void showSortedInventory() {
-        List<StoreItem> inventory = store.getInventory();
-        if (inventory.isEmpty()) {
+        if (store.getInventory().isEmpty()) {
             System.out.println("Магазин порожній. Нічого сортувати.");
             return;
         }
 
-        // Створюємо тимчасовий список саме об'єктів Clothes для сортування
-        List<Clothes> itemsToSort = new ArrayList<>();
-        for (StoreItem si : inventory) {
-            itemsToSort.add(si.getItem());
+        System.out.println("\n--- ОБЕРІТЬ КРИТЕРІЙ СОРТУВАННЯ ---");
+        System.out.println("1. Сортувати за ціною (від дешевих до дорогих)");
+        System.out.println("2. Сортувати за брендом (в алфавітному порядку)");
+        System.out.println("3. Сортувати за кількістю на складі (від найбільшої)");
+        System.out.println("0. Повернутися в головне меню");
+        System.out.print("Ваш вибір: ");
+
+        String sortChoice = scanner.nextLine();
+        if (sortChoice.equals("0")) return;
+
+        // Створюємо копію списку, щоб не змінювати оригінальний порядок у магазині
+        List<StoreItem> itemsToSort = new ArrayList<>(store.getInventory());
+        Comparator<StoreItem> comparator = null;
+
+        switch (sortChoice) {
+            case "1" -> {
+                // Анонімний внутрішній клас для сортування за ЦІНОЮ
+                comparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return Double.compare(o1.getItem().getPrice(), o2.getItem().getPrice());
+                    }
+                };
+            }
+            case "2" -> {
+                // Анонімний внутрішній клас для сортування за БРЕНДОМ
+                comparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return o1.getItem().getBrand().compareToIgnoreCase(o2.getItem().getBrand());
+                    }
+                };
+            }
+            case "3" -> {
+                // Анонімний внутрішній клас для сортування за КІЛЬКІСТЮ (спадання)
+                comparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return Integer.compare(o2.getQuantity(), o1.getQuantity());
+                    }
+                };
+            }
+            default -> {
+                System.out.println("Невірний критерій сортування.");
+                return;
+            }
         }
 
-        // Сортуємо список. Java автоматично використає метод compareTo, 
-        // який ми реалізували в класі Clothes.
-        Collections.sort(itemsToSort);
+        // Виконання сортування (БЕЗ Stream API)
+        Collections.sort(itemsToSort, comparator);
 
-        System.out.println("\n--- ВІДСОРТОВАНИЙ СПИСОК ТОВАРІВ (від дешевих до дорогих) ---");
-        for (Clothes c : itemsToSort) {
-            System.out.println(c);
+        System.out.println("\n--- ВІДСОРТОВАНИЙ СПИСОК ---");
+        for (StoreItem item : itemsToSort) {
+            System.out.println(item.toString());
         }
     }
 
