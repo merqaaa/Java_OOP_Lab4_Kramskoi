@@ -19,5 +19,17 @@
       "price": 1600.0
     },
     "quantity": 1
+  },
+  {
+    "item": {
+      "washType": "StoneWash",
+      "length": 105,
+      "classType": "Jeans",
+      "type": "Джинси",
+      "brand": "Levis",
+      "size": "M",
+      "price": 1500.0
+    },
+    "quantity": 1
   }
 ]
