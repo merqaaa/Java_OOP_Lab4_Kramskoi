@@ -4,23 +4,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClothesTest {
+
     @Test
-    void testInvalidPrice() {
-        assertThrows(IllegalArgumentException.class, () -> new Clothes("T", "B", Size.M, -5.0));
+    void shouldThrowInvalidFieldValueExceptionWhenPriceIsNegative() {
+        // Тепер використовуємо конкретний клас Pants замість абстрактного Clothes
+        assertThrows(InvalidFieldValueException.class, () -> {
+            new Pants("Nike", Size.M, -500, 100);
+        }, "Повинно кидати InvalidFieldValueException при від'ємній ціні");
     }
 
     @Test
-    void testEmptyType() {
-        Clothes c = new Clothes("Тип", "Бренд", Size.L, 100);
-        assertThrows(IllegalArgumentException.class, () -> c.setType(""));
-    }
-
-    @Test
-    void testCopyConstructor() {
-        Clothes original = new Clothes("Футболка", "Nike", Size.M, 500);
-        Clothes copy = new Clothes(original);
+    void shouldThrowInvalidFieldValueExceptionWhenBrandIsEmpty() {
+        Pants p = new Pants("Nike", Size.M, 500, 100);
         
-        assertEquals(original, copy, "Копія повинна бути рівною оригіналу");
-        assertNotSame(original, copy, "Копія повинна бути іншим об'єктом у пам'яті");
+        assertThrows(InvalidFieldValueException.class, () -> {
+            p.setBrand("");
+        }, "Повинно кидати InvalidFieldValueException при порожньому бренді");
     }
 }

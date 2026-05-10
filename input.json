@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "item": {
+      "washType": "Classic",
+      "length": 105,
+      "classType": "Jeans",
+      "uuid": "0b85fdb1-7de0-428c-9a21-af62876536c9",
+      "type": "Джинси",
+      "brand": "Lacoste",
+      "size": "S",
+      "price": 1800.0
+    },
+    "quantity": 2
+  }
+]
