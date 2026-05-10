@@ -1,23 +1,36 @@
 [
   {
     "item": {
-      "classType": "Clothes",
-      "type": "Футболка",
-      "brand": "Nike",
-      "size": "M",
-      "price": 500.0
-    },
-    "quantity": 1
-  },
-  {
-    "item": {
       "length": 110,
       "classType": "Pants",
       "type": "Штани",
       "brand": "Next",
       "size": "L",
-      "price": 1600.0
+      "price": 1500.0
     },
-    "quantity": 1
+    "quantity": 3
+  },
+  {
+    "item": {
+      "sleeveType": "short",
+      "classType": "Shirts",
+      "type": "Сорочка",
+      "brand": "Zara",
+      "size": "M",
+      "price": 890.0
+    },
+    "quantity": 5
+  },
+  {
+    "item": {
+      "washType": "Machine wash",
+      "length": 90,
+      "classType": "Jeans",
+      "type": "Джинси",
+      "brand": "Levis",
+      "size": "S",
+      "price": 1200.0
+    },
+    "quantity": 8
   }
 ]
