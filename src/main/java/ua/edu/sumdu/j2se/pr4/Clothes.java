@@ -1,21 +1,23 @@
 package ua.edu.sumdu.j2se.pr4;
 
 import java.util.Objects;
+import java.util.UUID;
 
-/**
- * Абстрактний базовий клас Clothes.
- * Реалізує інтерфейс Comparable для сортування за ціною.
- */
-public abstract class Clothes implements Comparable<Clothes> {
+public abstract class Clothes implements Comparable<Clothes>, Identifiable {
     protected String classType;
+    private UUID uuid; // Унікальний ідентифікатор
     private String type;
     private String brand;
     private Size size;
     private double price;
 
-    public Clothes() {}
+    public Clothes() {
+        // Якщо Gson створює об'єкт, він може перезаписати це, але для безпеки ініціалізуємо
+        this.uuid = UUID.randomUUID(); 
+    }
 
     public Clothes(String type, String brand, Size size, double price) {
+        this.uuid = UUID.randomUUID(); // Автоматична генерація при створенні
         this.classType = "Clothes";
         setType(type);
         setBrand(brand);
@@ -23,14 +25,17 @@ public abstract class Clothes implements Comparable<Clothes> {
         setPrice(price);
     }
 
-    // Реалізація методу compareTo для порівняння об'єктів за ціною
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
     @Override
     public int compareTo(Clothes other) {
         if (other == null) return 1;
         return Double.compare(this.price, other.price);
     }
 
-    // Гетери та сетери залишаються без змін
     public String getClassType() { return classType; }
     public String getType() { return type; }
     public void setType(String type) {
@@ -52,7 +57,8 @@ public abstract class Clothes implements Comparable<Clothes> {
 
     @Override
     public String toString() {
-        return String.format("Одяг [Тип: %s, Бренд: %s, Розмір: %s, Ціна: %.2f]", type, brand, size, price);
+        return String.format("[UUID: %s] Одяг [Тип: %s, Бренд: %s, Розмір: %s, Ціна: %.2f]", 
+                uuid.toString(), type, brand, size, price);
     }
 
     @Override
@@ -60,6 +66,6 @@ public abstract class Clothes implements Comparable<Clothes> {
         if (this == o) return true;
         if (!(o instanceof Clothes clothes)) return false;
         return Double.compare(clothes.price, price) == 0 && Objects.equals(type, clothes.type) && 
-               Objects.equals(brand, clothes.brand) && size == clothes.size;
+               Objects.equals(brand, clothes.brand) && size == clothes.size && Objects.equals(uuid, clothes.uuid);
     }
 }
