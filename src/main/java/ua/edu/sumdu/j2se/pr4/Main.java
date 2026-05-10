@@ -8,14 +8,14 @@ import java.util.Scanner;
 
 /**
  * Драйвер-клас для керування магазином.
- * Лабораторна №14: Inner classes, interface Comparator.
+ * Лабораторна №15: Lambda expressions (Заміна анонімних класів).
  */
 public class Main {
     private static final Store store = new Store();
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("Практична робота №14. Студент: Крамськой Іван | Варіант: 5");
+        System.out.println("Практична робота №15. Студент: Крамськой Іван | Варіант: 5");
         
         // Завантаження даних із JSON при старті
         store.setInventory(FileManager.loadFromFile());
@@ -27,7 +27,7 @@ public class Main {
             System.out.println("1. Пошук об'єкта у колекції");
             System.out.println("2. Додати новий товар");
             System.out.println("3. Вивести весь список (як у файлі)");
-            System.out.println("4. Вивести ВІДСОРТОВАНИЙ список (Comparator)");
+            System.out.println("4. Вивести ВІДСОРТОВАНИЙ список (Лямбда-вирази)");
             System.out.println("5. Завершити роботу та зберегти дані");
             System.out.print("Вибір: ");
 
@@ -48,7 +48,7 @@ public class Main {
     }
 
     /**
-     * Меню для сортування колекції (Лабораторна №14)
+     * Метод для сортування колекції з використанням ЛЯМБДА-ВИРАЗІВ (ЛР №15)
      */
     private static void showSortedInventory() {
         if (store.getInventory().isEmpty()) {
@@ -66,37 +66,22 @@ public class Main {
         String sortChoice = scanner.nextLine();
         if (sortChoice.equals("0")) return;
 
-        // Створюємо копію списку, щоб не змінювати оригінальний порядок у магазині
+        // Створюємо копію списку
         List<StoreItem> itemsToSort = new ArrayList<>(store.getInventory());
         Comparator<StoreItem> comparator = null;
 
         switch (sortChoice) {
             case "1" -> {
-                // Анонімний внутрішній клас для сортування за ЦІНОЮ
-                comparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return Double.compare(o1.getItem().getPrice(), o2.getItem().getPrice());
-                    }
-                };
+                // Лямбда-вираз для сортування за ціною
+                comparator = (o1, o2) -> Double.compare(o1.getItem().getPrice(), o2.getItem().getPrice());
             }
             case "2" -> {
-                // Анонімний внутрішній клас для сортування за БРЕНДОМ
-                comparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return o1.getItem().getBrand().compareToIgnoreCase(o2.getItem().getBrand());
-                    }
-                };
+                // Лямбда-вираз для сортування за брендом
+                comparator = (o1, o2) -> o1.getItem().getBrand().compareToIgnoreCase(o2.getItem().getBrand());
             }
             case "3" -> {
-                // Анонімний внутрішній клас для сортування за КІЛЬКІСТЮ (спадання)
-                comparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return Integer.compare(o2.getQuantity(), o1.getQuantity());
-                    }
-                };
+                // Лямбда-вираз для сортування за кількістю (зворотній порядок)
+                comparator = (o1, o2) -> Integer.compare(o2.getQuantity(), o1.getQuantity());
             }
             default -> {
                 System.out.println("Невірний критерій сортування.");
@@ -112,6 +97,8 @@ public class Main {
             System.out.println(item.toString());
         }
     }
+
+    // --- УСІ ІНШІ МЕТОДИ ЗАЛИШАЮТЬСЯ БЕЗ ЗМІН ---
 
     private static void creationMenu() {
         System.out.println("\n--- ОБЕРІТЬ ТИП ТОВАРУ ---");
